@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import MyRoutes from './routes/MyRoutes'
 
-const App = () => {
+const App = () =>
+{
   return (
-    <div>App</div>
+    <Fragment>
+      <MyRoutes />
+    </Fragment>
   )
 }
 
