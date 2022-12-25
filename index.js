@@ -32,6 +32,8 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+app.use("/blogit/auth", require("./routes/auth"));
+
 // errorHandler.
 app.use(errorHandler);
 

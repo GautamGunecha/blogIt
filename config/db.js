@@ -24,7 +24,7 @@ function connectToDB(mongoDbUri) {
         )},${JSON.stringify(doc)})`
       );
     });
-    console.log(`MongoDB :: connected ${this.name}`);
+    console.log(`MongoDB :: connected ${this.name}`.yellow);
   });
 
   db.on("disconnected", function () {
