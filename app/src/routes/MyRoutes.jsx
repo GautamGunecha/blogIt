@@ -1,9 +1,12 @@
 import React, { Fragment } from 'react'
+import Home from '../pages/home/Home'
 
 const MyRoutes = () =>
 {
     return (
-        <Fragment></Fragment>
+        <Fragment>
+            <Home />
+        </Fragment>
     )
 }
 
