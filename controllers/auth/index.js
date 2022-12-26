@@ -21,7 +21,10 @@ const register = async (req, res, next) => {
       throw new Error("Enter required fields.");
 
     const verifyPassword = validatePassword(password);
+    if (!verifyPassword.success) throw new Error(verifyPassword?.msg);
+
     const verifyEmail = validateEmail(email);
+    if (!verifyEmail) throw new Error("Invalid Email.");
 
     const user = await Users.findOne({ email }).lean();
     if (user) throw new Error("User already exists.");
@@ -41,6 +44,7 @@ const register = async (req, res, next) => {
 
     return res.status(201).json({ msg: "Registration Success." });
   } catch (error) {
+    error.statusCode = 400;
     next(error);
   }
 };

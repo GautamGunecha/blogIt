@@ -8,7 +8,8 @@ const validateEmail = (email) => {
 const validatePassword = (password) => {
   const validate = {};
   const minLength = 6;
-  const regex = /^[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+  const regex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+  const validPassword = regex.test(password);
 
   if (password.length < minLength) {
     validate.success = false;
@@ -16,7 +17,7 @@ const validatePassword = (password) => {
     return validate;
   }
 
-  if (!regex.test(password)) {
+  if (!validPassword) {
     validate.success = false;
     validate.msg =
       "Password should contain atleast one number and one special character";

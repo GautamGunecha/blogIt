@@ -37,8 +37,8 @@ app.set("view engine", "ejs");
 
 // api endpoints.
 app.get("/", (req, res) => res.render("index"));
-app.use("/blogit/auth", require("./routes/auth"));
-app.use("/blogit/user", require("./routes/users"));
+app.use("/auth", require("./routes/auth"));
+app.use("/user", require("./routes/users"));
 
 // errorHandler.
 app.use(errorHandler);
