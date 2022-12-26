@@ -2,6 +2,15 @@ const Users = require("../../models/users/userModel");
 const bcrypt = require("bcryptjs");
 const _ = require("lodash");
 
+const { validateEmail, validatePassword } = require("../../config/validations");
+const {
+  userActivationToken,
+  userAccessToken,
+  userRefreshToken,
+} = require("../../services/jwt");
+
+const { CLIENT_URL } = process.env;
+
 const register = async (req, res, next) => {
   try {
     const { firstName, lastName, email, password } = req.body;
@@ -10,6 +19,9 @@ const register = async (req, res, next) => {
 
     if (!firstName || !lastName || !email || !password)
       throw new Error("Enter required fields.");
+
+    const verifyPassword = validatePassword(password);
+    const verifyEmail = validateEmail(email);
 
     const user = await Users.findOne({ email }).lean();
     if (user) throw new Error("User already exists.");
@@ -24,7 +36,10 @@ const register = async (req, res, next) => {
       password: hashPassword,
     };
 
-    return res.status(200).json({ msg: "Registration Success." });
+    const activationToken = userActivationToken(newUser);
+    const url = `${CLIENT_URL}/user/activate/${activationToken}`;
+
+    return res.status(201).json({ msg: "Registration Success." });
   } catch (error) {
     next(error);
   }

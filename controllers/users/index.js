@@ -1,5 +1,7 @@
 const Users = require("../../models/users/userModel");
 
+const getUserProfile = async (req, res, next) => {};
+
 const updateProfile = async (req, res, next) => {
   try {
   } catch (error) {
@@ -14,4 +16,4 @@ const deleteProfile = async (req, res, next) => {
   }
 };
 
-module.exports = { updateProfile, deleteProfile };
+module.exports = { updateProfile, deleteProfile, getUserProfile };

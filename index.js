@@ -9,6 +9,8 @@ const mongoSanitize = require("express-mongo-sanitize");
 const rateLimit = require("express-rate-limit");
 const errorHandler = require("./middlewares/error");
 const path = require("path");
+const cookieParser = require("cookie-parser");
+const fileUpload = require("express-fileupload");
 
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,
@@ -23,19 +25,25 @@ app.use(hpp());
 app.use(helmet());
 app.use(xssClean());
 app.use(mongoSanitize());
+app.use(cookieParser());
+app.use(
+  fileUpload({
+    useTempFiles: true,
+  })
+);
 app.use(limiter);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 // api endpoints.
-app.get("/", (req, res) => {
-  res.render("index");
-});
-
+app.get("/", (req, res) => res.render("index"));
 app.use("/blogit/auth", require("./routes/auth"));
+app.use("/blogit/user", require("./routes/users"));
 
 // errorHandler.
 app.use(errorHandler);
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`server running on port:${port}`.blue));
+app.listen(port, () =>
+  console.log(`server running on: http://localhost:${port}`.brightBlue)
+);
