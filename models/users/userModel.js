@@ -16,13 +16,22 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
-      max: 150,
+      max: 200,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
       min: 6,
       required: true,
+    },
+    phoneNumber: {
+      type: Number,
+      unique: true,
+    },
+    countryCode: {
+      type: String,
+      default: "+91",
     },
     status: {
       type: String,
@@ -37,6 +46,10 @@ const userSchema = new Schema(
       type: String,
       enum: ["google", "email"],
       default: "email",
+    },
+    enabledPayment: {
+      type: Boolean,
+      default: false,
     },
   },
   {
