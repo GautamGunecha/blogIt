@@ -33,6 +33,10 @@ const userSchema = new Schema(
       type: String,
       default: "+91",
     },
+    avatar: {
+      type: String,
+      default: "",
+    },
     status: {
       type: String,
       enum: ["active", "inactive"],
@@ -50,6 +54,9 @@ const userSchema = new Schema(
     enabledPayment: {
       type: Boolean,
       default: false,
+    },
+    paymentConfig: {
+      type: String,
     },
   },
   {

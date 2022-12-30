@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+// https://github.com/devat-youtuber/mern-full-auth/blob/master/controllers/userCtrl.js
 
 const DB = process.env.MONGODB_URI;
 const DB_HISTORY = process.env.MONGODB_URI_HISTORY;
@@ -12,7 +13,7 @@ function connectToDB(mongoDbUri) {
   db.on("error", function (error) {
     console.log(`MongoDB :: connection ${this.name} ${JSON.stringify(error)}`);
     db.close().catch(() =>
-      console.log(`MongoDB :: failed to close connection ${this.name}`)
+      console.log(`MongoDB :: failed to close connection ${this.name}`.red)
     );
   });
 
@@ -21,14 +22,14 @@ function connectToDB(mongoDbUri) {
       console.log(
         `MongoDB :: ${this.conn.name} ${col}.${method}(${JSON.stringify(
           query
-        )},${JSON.stringify(doc)})`
+        )},${JSON.stringify(doc)})`.brightMagenta
       );
     });
-    console.log(`MongoDB :: connected ${this.name}`.yellow);
+    console.log(`MongoDB :: connected ${this.name}`.brightYellow);
   });
 
   db.on("disconnected", function () {
-    console.log(`MongoDB :: disconnected ${this.name}`);
+    console.log(`MongoDB :: disconnected ${this.name}`.red);
   });
 
   return db;
