@@ -18,8 +18,23 @@ const userRefreshToken = (payload) => {
   });
 };
 
+const verifyUserActivationToken = (token) => {
+  return jwt.verify(token, process.env.USER_ACTIVATION_TOKEN);
+};
+
+const verifyUserAccessToken = (token) => {
+  return jwt.verify(token, process.env.USER_ACTIVATION_TOKEN);
+};
+
+const verifyUserRefreshToken = (token) => {
+  return jwt.verify(token, process.env.USER_REFRESH_TOKEN);
+};
+
 module.exports = {
   userActivationToken,
   userAccessToken,
   userRefreshToken,
+  verifyUserActivationToken,
+  verifyUserAccessToken,
+  verifyUserRefreshToken,
 };
