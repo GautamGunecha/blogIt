@@ -40,7 +40,17 @@ const sendEmail = (to, url, text) => {
     from: SENDER_EMAIL,
     to,
     subject: "Blog IT Email Verification",
-    html: ``,
+    html: `
+    <div style="max-width: 700px; margin:auto; border: 10px solid #ddd; padding: 50px 20px; font-size: 110%;">
+            <h2 style="text-align: center; text-transform: uppercase;color: teal;">Welcome to the BlogIT.</h2>
+            
+            <p>Congratulations! You're almost set to start using BlogIT.
+                Just click the button below to validate your email address.
+            </p>
+            
+            <a href=${url} style="background: crimson; text-decoration: none; color: white; padding: 10px 20px; margin: 10px 0; display: inline-block;">${text}</a>
+    </div>
+    `,
   };
 
   smtpTransport.sendMail(mailTemplate, (err, info) => {

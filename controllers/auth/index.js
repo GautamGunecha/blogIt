@@ -60,9 +60,12 @@ const register = async (req, res, next) => {
     const activationToken = userActivationToken(newUser);
     const url = `${CLIENT_URL}/user/activate/${activationToken}`;
 
-    sendEmail(email, url, "Click Here To Verify Email");
+    if (process.env.NODE_ENV === "PRODUCTION")
+      sendEmail(email, url, "Click Here To Verify Email");
 
-    return res.status(201).json({ msg: "Registration Success." });
+    return res
+      .status(201)
+      .json({ msg: "Registration Success.", activationToken });
   } catch (error) {
     error.statusCode = 400;
     next(error);
@@ -78,7 +81,7 @@ const register = async (req, res, next) => {
  * create new users.
  */
 
-const verification = async (req, res) => {
+const verification = async (req, res, next) => {
   try {
     const { activationToken } = req.body;
     const user = verifyUserAccessToken(activationToken);
@@ -116,8 +119,8 @@ const verification = async (req, res) => {
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    if (_.isEmpty(req.body)) throw new Error("Enter required data.");
 
+    if (_.isEmpty(req.body)) throw new Error("Enter required data.");
     if (!email || !password) throw new Error("Enter required fields.");
 
     const user = await Users.findOne({ email }).lean();
@@ -129,7 +132,7 @@ const login = async (req, res, next) => {
     const refreshToken = userRefreshToken({ id: user?._id });
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      path: "/user/refresh_token",
+      path: "/auth/refresh-token",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -150,7 +153,7 @@ const login = async (req, res, next) => {
 
 const generateAccessToken = async (req, res, next) => {
   try {
-    const refreshToken = req.cookie.refreshToken;
+    const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) throw new Error("Please login now!");
 
     const verifyRefreshToken = verifyUserRefreshToken(refreshToken);
@@ -182,10 +185,25 @@ const loginWithPhoneNumber = async (req, res, next) => {
   }
 };
 
+/**
+ * @logout logout user from web application.
+ * @api {POST} req /logout
+ */
+
+const logout = async (req, res, next) => {
+  try {
+    res.clearCookie("refreshToken", { path: "/auth/refresh-token" });
+    return res.status(200).json({ msg: "Logged Out." });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   register,
   verification,
   login,
-  loginWithPhoneNumber,
   generateAccessToken,
+  loginWithPhoneNumber,
+  logout,
 };

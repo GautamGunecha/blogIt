@@ -7,7 +7,7 @@ const {
   deleteProfile,
 } = require("../../controllers/users");
 
-router.get("/:id", auth, getUserProfile);
+router.get("/", auth, getUserProfile);
 router.patch("/update", auth, updateProfile);
 router.delete("/delete", auth, deleteProfile);
 
