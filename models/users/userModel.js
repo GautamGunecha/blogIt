@@ -37,6 +37,10 @@ const userSchema = new Schema(
       type: String,
       default: "",
     },
+    gender: {
+      type: String,
+      enum: ["male", "female"],
+    },
     status: {
       type: String,
       enum: ["active", "inactive"],
@@ -58,6 +62,24 @@ const userSchema = new Schema(
     paymentConfig: {
       type: String,
     },
+    postsLiked: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Posts",
+      },
+    ],
+    following: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Users",
+      },
+    ],
+    followers: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Users",
+      },
+    ],
   },
   {
     timestamps: true,

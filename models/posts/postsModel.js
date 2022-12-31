@@ -4,16 +4,34 @@ const { mongoDB } = require("../../config/db");
 
 const postSchema = new Schema(
   {
+    thumbnail: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,
       min: 30,
     },
-    paragraph: {
-      type: String,
-      required: true,
+    text: [
+      {
+        subheader: {
+          type: String,
+        },
+        image: {
+          type: String,
+        },
+        paragraphs: [
+          {
+            type: String,
+          },
+        ],
+      },
+    ],
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "Users",
     },
-    createdBy: {},
     createdAt: {
       type: Date,
     },
@@ -24,6 +42,34 @@ const postSchema = new Schema(
       type: String,
       enum: ["active", "inactive", "private", "public"],
       default: "private",
+    },
+    views: {
+      type: Number,
+      default: 0,
+    },
+    likedBy: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Users",
+      },
+    ],
+    comment: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Comments",
+      },
+    ],
+    tags: {
+      type: String,
+      enum: [
+        "finance",
+        "technical",
+        "lifestyle",
+        "business",
+        "motivational",
+        "spiritual",
+      ],
+      required: true,
     },
   },
   {
